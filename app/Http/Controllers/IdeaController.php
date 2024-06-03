@@ -15,6 +15,8 @@ class IdeaController extends Controller
         /* shorter version
          return view('ideas.show',compact('idea'));
          */
+
+
         return view('ideas.show', [
             'idea' => $idea,
         ]);
@@ -22,13 +24,11 @@ class IdeaController extends Controller
 
     public function store()
     {
-        request()->validate([
+        $validated = request()->validate([
             'content' => 'required | min:3 | max:240',
         ]);
 
-        Idea::create([
-            "content" => request()->get('content', ""),
-        ]);
+        Idea::create($validated);
 
         return redirect()->route("dashboard")->with('success', 'Idea created succesfully');
     }
@@ -36,32 +36,31 @@ class IdeaController extends Controller
     public function edit(Idea $idea)
     {
         $editing = true;
-        return view('ideas.show', compact('idea','editing'));
+        return view('ideas.show', compact('idea', 'editing'));
     }
 
     public function update(Idea $idea)
     {
-        request()->validate([
+        $validated = request()->validate([
             'content' => 'required | min:3 | max:240',
         ]);
 
-        $idea->content = request()->get('content','');
-        $idea->save();
+        $idea->update($validated);
 
-        return redirect()->route("ideas.show",$idea->id)->with('success', 'Idea updated succesfully');
+        return redirect()->route("ideas.show", $idea->id)->with('success', 'Idea updated succesfully');
     }
 
     public function destroy(Idea $idea)
     {
         $idea->delete();
 
-        /* 
-        Idea::where('id', $id)->firstOrFail()->delete(); 
+        /*
+        Idea::where('id', $id)->firstOrFail()->delete();
         */
 
-        /* longer version       
+        /* longer version
         $idea = Idea::where('id',$id)->firstOrFail()
-        $idea->delete(); 
+        $idea->delete();
         */
 
         return redirect()->route("dashboard")->with('success', 'Idea deleted succesfully');
