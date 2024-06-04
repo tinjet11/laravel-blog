@@ -16,7 +16,6 @@ class IdeaController extends Controller
          return view('ideas.show',compact('idea'));
          */
 
-
         return view('ideas.show', [
             'idea' => $idea,
         ]);
