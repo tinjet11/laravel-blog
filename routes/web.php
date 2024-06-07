@@ -1,39 +1,46 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\IdeaLikeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
+Route::group(['prefix' => 'ideas/', 'as' => 'ideas.'], function () {
+    Route::post('', [IdeaController::class, 'store'])->name('store');
 
-//Idea
-Route::post('/ideas', [IdeaController::class, 'store'])->name('ideas.store');
+    Route::get('/{idea}', [IdeaController::class, 'show'])->name('show');
 
-Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('ideas.show');
+    Route::group(['middleware' => ['auth']], function () {
 
-Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('ideas.edit');
+        Route::get('/{idea}/edit', [IdeaController::class, 'edit'])->name('edit')->middleware('auth');
 
-Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
+        Route::put('/{idea}', [IdeaController::class, 'update'])->name('update')->middleware('auth');
 
-Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('ideas.destroy');
+        Route::delete('/{idea}', [IdeaController::class, 'destroy'])->name('destroy')->middleware('auth');
 
-//Comment
-Route::post('/ideas/{idea}/comments', [CommentController::class, 'store'])->name('ideas.comments.store');
+        //Comment
+        Route::post('/{idea}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+    });
+});
+
+Route::resource('users', UserController::class)->only('show', 'edit', 'update')->middleware('auth');
+
+Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
 
-Route::get('/register', [AuthController::class,'register'])->name('register');
+Route::post('/users/{user}/follow', [FollowerController::class, 'follow'])->name('users.follow')->middleware('auth');
+Route::post('/users/{user}/unfollow', [FollowerController::class, 'unfollow'])->name('users.unfollow')->middleware('auth');
 
-Route::post('/register', [AuthController::class,'store']);
 
-Route::get('/login', [AuthController::class,'login'])->name('login');
 
-Route::post('/login', [AuthController::class,'authenticate']);
-
-Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+Route::post('/ideas/{idea}/like', [IdeaLikeController::class, 'like'])->name('ideas.like')->middleware('auth');
+Route::post('/ideas/{idea}/unlike', [IdeaLikeController::class, 'unlike'])->name('ideas.unlike')->middleware('auth');
 
 Route::get('/terms', function () {
     return view('terms');
-});
+})->name('terms');

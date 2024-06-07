@@ -10,13 +10,19 @@ class CommentController extends Controller
 {
     //
 
-    public function store(Idea $idea){
+    public function store(Idea $idea)
+    {
 
-        Comment::create([
-            "content" => request()->get('content'),
-            "idea_id"=> $idea->id,
+        $validated = request()->validate([
+            'comment' => 'required',
         ]);
 
-        return redirect()->route("ideas.show",$idea->id)->with('success', 'Comment added succesfully');
-    } 
+        Comment::create([
+            "content" => $validated['comment'],
+            "idea_id" => $idea->id,
+            "user_id" => auth()->id(),
+        ]);
+
+        return redirect()->route("ideas.show", $idea->id)->with('success', 'Comment added succesfully');
+    }
 }

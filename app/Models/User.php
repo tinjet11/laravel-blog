@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Idea;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio',
+        'image',
     ];
 
     /**
@@ -44,4 +47,51 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function ideas()
+    {
+        return $this->hasMany(Idea::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'user_id')->withTimestamps();
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follower_user', 'user_id', 'follower_id')->withTimestamps();
+    }
+
+    public function isFollows(User $user)
+    {
+        return $this->followings()->where('user_id', $user->id)->exists();
+    }
+
+    public function isLikes(Idea $idea)
+    {
+        return $this->likes()->where('idea_id', $idea->id)->exists();
+    }
+
+    public function getImageUrl()
+    {
+
+        if ($this->image) {
+            return url('storage/' . $this->image);
+        } else {
+            return 'https://api.dicebear.com/6.x/fun-emoji/svg?seed={this->name}';
+        }
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Idea::class, 'idea_like')->withTimestamps();
+    }
+
 }

@@ -17,4 +17,12 @@ class DashboardController extends Controller
         }
         return view('dashboard', ['ideas' => $ideas->paginate(3)]);
     }
+
+/*     public function clear(){
+        request()->get('search')->
+
+        return redirect()->route('dashboard');
+    } */
+
+
 }

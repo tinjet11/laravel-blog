@@ -3,33 +3,24 @@
         <div class="card-body pt-3">
             <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="#">
-                        <span>Home</span></a>
+                    <a class="{{ Route::is('dashboard') ? 'text-black rounded' : '' }} nav-link"
+                       href="{{ route('dashboard') }}"
+                       style="{{ Route::is('dashboard') ? 'background-color: #F5E344;' : '' }}">
+                        <span>Home</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>Explore</span></a>
+                    <a class="{{ Route::is('terms') ? 'text-black rounded' : '' }} nav-link"
+                       href="{{ route('terms') }}"
+                       style="{{ Route::is('terms') ? 'background-color: #F5E344;' : '' }}">
+                        <span>Terms</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>Feed</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>Terms</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>Support</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span>Settings</span></a>
-                </li>
+
             </ul>
         </div>
         <div class="card-footer text-center py-2">
-            <a class="btn btn-link btn-sm" href="#">View Profile </a>
+            <a class="btn btn-link btn-sm" href="{{route('profile')}}">View Profile </a>
         </div>
     </div>
 </div>
