@@ -6,7 +6,7 @@
                     <a class="{{ Route::is('dashboard') ? 'text-black rounded' : '' }} nav-link"
                        href="{{ route('dashboard') }}"
                        style="{{ Route::is('dashboard') ? 'background-color: #F5E344;' : '' }}">
-                        <span>Home</span>
+                        <span>Homes</span>
                     </a>
                 </li>
                 <li class="nav-item">
