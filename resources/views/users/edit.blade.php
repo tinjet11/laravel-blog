@@ -17,9 +17,6 @@
                 {{ $ideas->withQueryString()->links() }}
             </div>
         </div>
-        <div class="col-3">
-            @include('shared.search_bar')
-            @include('shared.follow_card')
-        </div>
+    
     </div>
 @endsection

@@ -16,7 +16,7 @@
                 </div>
                 <div class="form-group mt-3">
                     <label for="password" class="text-dark">Password:</label><br>
-                    <input type="text" name="password" id="password" class="form-control">
+                    <input type="password" name="password" id="password" class="form-control">
                     @error('password')
                         <span class="d-block fs-6 text-danger mt-2">{{ $message }}</span>
                     @enderror
