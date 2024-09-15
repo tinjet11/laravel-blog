@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Idea;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -83,7 +84,7 @@ class User extends Authenticatable
     {
 
         if ($this->image) {
-            return url('storage/' . $this->image);
+           return $this->image;
         } else {
             return 'https://api.dicebear.com/6.x/fun-emoji/svg?seed={this->name}';
         }

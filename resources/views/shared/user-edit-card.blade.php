@@ -5,8 +5,7 @@
             @method('put')
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img style="width:150px" class="me-3 avatar-sm rounded-circle"
-                        src="{{$user->getImageUrl()}}" alt="Mario Avatar">
+                    <img style="width:150px" class="me-3 avatar-sm rounded-circle" src="{{ route('user-image.show', ['user' => $user->id]) }}" alt="Avatar">
                     <div>
                         <input name="name" value="{{ $user->name }}" type="text" class="form-control">
                         @error('name')

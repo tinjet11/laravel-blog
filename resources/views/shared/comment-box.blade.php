@@ -14,8 +14,7 @@
 
         @forelse ($idea->comments as $comment)
             <div class="d-flex align-items-start">
-                <img style="width:35px" class="me-2 avatar-sm rounded-circle" src="{{ $comment->user->getImageUrl() }}"
-                    alt="Luigi Avatar">
+                <img style="width:150px" class="me-3 avatar-sm rounded-circle" src="{{ route('user-image.show', ['user' => $comment->user->id]) }}" alt="Avatar">
                 <div class="w-100">
                     <div class="d-flex justify-content-between">
                         <h5 class="">{{ $comment->user->name }}

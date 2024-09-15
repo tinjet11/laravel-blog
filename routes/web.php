@@ -36,7 +36,7 @@ Route::get('/profile', [UserController::class, 'profile'])->name('profile')->mid
 Route::post('/users/{user}/follow', [FollowerController::class, 'follow'])->name('users.follow')->middleware('auth');
 Route::post('/users/{user}/unfollow', [FollowerController::class, 'unfollow'])->name('users.unfollow')->middleware('auth');
 
-
+Route::get('/user-image/{user}', [UserController::class, 'userImage'])->name('user-image.show');
 
 Route::post('/ideas/{idea}/like', [IdeaLikeController::class, 'like'])->name('ideas.like')->middleware('auth');
 Route::post('/ideas/{idea}/unlike', [IdeaLikeController::class, 'unlike'])->name('ideas.unlike')->middleware('auth');

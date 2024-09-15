@@ -41,13 +41,26 @@ class UserController extends Controller
             "image" => "image",
             "name" => "required|min:3|max:40",
         ]);
+        try {
+            if (request()->has('image')) {
+                //$imagePath = request()->file('image')->store('profile', 'public');
 
-        if (request()->has('image')) {
-            $imagePath = request()->file('image')->store('profile', 'public');
-            $validated['image'] = $imagePath;
+                // Store the image directly to S3
+                $imagePath = request()->file('image')->store('profile', 's3');
 
-            Storage::disk('public')->delete($user->image ?? '');
+                $validated['image'] = $imagePath;
+
+                //Storage::disk('public')->delete($user->image ?? '');
+
+                if ($user->image && Storage::disk('s3')->exists($user->image)) {
+                    Storage::disk('s3')->delete($user->image);
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error("Image upload failed");
+            return back()->withErrors(['error' => 'Image upload failed.']);
         }
+
 
         $user->update($validated);
         Log::info("user profile updated");
@@ -58,5 +71,26 @@ class UserController extends Controller
     {
         //
         return $this->show(auth()->user());
+    }
+
+    public function userImage(User $user)
+    {
+        // Get the image path from the user model
+        $imagePath = $user->image;
+
+        // Check if the image exists in S3
+        if (Storage::disk('s3')->exists($imagePath)) {
+            // Get the image content
+            $image = Storage::disk('s3')->get($imagePath);
+
+            // Determine the MIME type manually
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($image);
+
+            // Return the image with the correct content type
+            return response($image)->header('Content-Type', $mimeType);
+        } else {
+            abort(404, 'Image not found.');
+        }
     }
 }

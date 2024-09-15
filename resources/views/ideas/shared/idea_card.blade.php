@@ -3,8 +3,7 @@
         <div class="px-3 pt-4 pb-2">
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img style="width:50px" class="me-2 avatar-sm rounded-circle" src="{{ $idea->user->getImageUrl() }}"
-                        alt="Mario Avatar">
+                    <img style="width:150px" class="me-3 avatar-sm rounded-circle" src="{{ route('user-image.show', ['user' => $idea->user->id]) }}" alt="Avatar">
                     <div>
                         <h5 class="card-title mb-0"><a href="{{ route('users.show', $idea->user) }}">
                                 {{ $idea->user->name }}
@@ -43,7 +42,7 @@
                 </p>
             @endif
             <div class="d-flex justify-content-between">
-        
+
                     @include('ideas.shared.like-button')
 
                 <div>
